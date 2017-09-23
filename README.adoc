@@ -21,3 +21,15 @@ $ # install Nim using APT or from the upstream website
 $ sudo apt-get install nim
 $ nimble install wave_function_collapse
 ----
+
+
+=== Examples:
+
+image:https://raw.githubusercontent.com/FedericoCeratto/wave_function_collapse/master/tests/data/input/Red%20Maze.png[Red Maze, 32, role="left"]
+image:https://raw.githubusercontent.com/FedericoCeratto/wave_function_collapse/master/tests/data/output/RedMaze.png[Red Maze, role="right"]
+
+image:https://raw.githubusercontent.com/FedericoCeratto/wave_function_collapse/master/tests/data/input/Colored%20City.png[Red Maze, 32, role="left"]
+image:https://raw.githubusercontent.com/FedericoCeratto/wave_function_collapse/master/tests/data/output/ColoredCity.gif[ColoredCity, role="right"]
+
+image:https://raw.githubusercontent.com/FedericoCeratto/wave_function_collapse/master/tests/data/output/TrickKnot.gif[TrickKnot]
+

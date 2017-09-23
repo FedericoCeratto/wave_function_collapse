@@ -15,9 +15,9 @@ task tests_unit, "Unit tests":
   exec "nim c -p:. -r -d:testing -d:lcg tests/unit.nim"
 
 task tests_functional, "Functional tests":
-  exec "nim c -p:. -r -d:testing -d:lcg tests/functional.nim"
+  exec "nim c -p:. -r -d:testing -d:lcg -d:release tests/functional.nim"
 
 task gifs_2d, "Generate 2D gifs":
-  exec "nim c -p:. -r -d:testing -d:lcg tests/gifs_2d.nim"
+  exec "nim c -p:. -r -d:testing -d:lcg -d:release tests/gifs_2d.nim"
 
 
