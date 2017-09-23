@@ -1,0 +1,23 @@
+== Wave Function Collapse
+
+Pattern generation library based on https://github.com/mxgmn/WaveFunctionCollapse
+
+CAUTION: The library is in alpha stage.
+
+image:https://img.shields.io/badge/status-alpha-orange.svg[badge]
+image:https://circleci.com/gh/FedericoCeratto/wave_function_collapse.svg?style=svg["CircleCI", link="https://circleci.com/gh/FedericoCeratto/wave_function_collapse"]
+
+.Features:
+[none]
+- [x] 2D model generation
+- [ ] 3D model generation
+- [ ] 2D animated image generation
+- [x] Deterministic RNG
+
+.Installation
+[source,bash]
+----
+$ # install Nim using APT or from the upstream website
+$ sudo apt-get install nim
+$ nimble install wave_function_collapse
+----
