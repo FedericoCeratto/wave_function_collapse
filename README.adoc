@@ -13,6 +13,7 @@ image:https://circleci.com/gh/FedericoCeratto/wave_function_collapse.svg?style=s
 - [ ] 3D model generation
 - [ ] 2D animated image generation
 - [x] Deterministic RNG
+- [x] Unit and functional tests
 
 .Installation
 [source,bash]
