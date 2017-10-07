@@ -33,4 +33,3 @@ image:https://raw.githubusercontent.com/FedericoCeratto/wave_function_collapse/m
 image:https://raw.githubusercontent.com/FedericoCeratto/wave_function_collapse/master/tests/data/output/ColoredCity.gif[ColoredCity, role="right"]
 
 image:https://raw.githubusercontent.com/FedericoCeratto/wave_function_collapse/master/tests/data/output/TrickKnot.gif[TrickKnot]
-
