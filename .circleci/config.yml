@@ -11,7 +11,7 @@ jobs:
       - checkout
       - run:
           name: unit tests
-          command: nimble test_unit
+          command: nimble tests_unit
 workflows:
   version: 2
   build_and_test:
