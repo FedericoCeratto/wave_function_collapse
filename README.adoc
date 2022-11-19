@@ -2,10 +2,9 @@
 
 Pattern generation library based on https://github.com/mxgmn/WaveFunctionCollapse
 
-CAUTION: The library is in alpha stage.
+CAUTION: The library is in beta stage.
 
-image:https://img.shields.io/badge/status-alpha-orange.svg[badge]
-image:https://circleci.com/gh/FedericoCeratto/wave_function_collapse.svg?style=svg["CircleCI", link="https://circleci.com/gh/FedericoCeratto/wave_function_collapse"]
+image:https://img.shields.io/badge/status-beta-orange.svg[badge]
 
 .Features:
 [none]
@@ -23,6 +22,11 @@ $ sudo apt-get install nim
 $ nimble install wave_function_collapse
 ----
 
+.Testing
+[source,bash]
+----
+nim -p:. -d:lcg r tests/unit.nim
+----
 
 === Examples:
 
