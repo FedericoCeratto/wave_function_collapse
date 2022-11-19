@@ -17,14 +17,14 @@ import nimPNG
 import gifwriter
 
 type
-  Wave* = seq[seq[seq[bool]]]  # FMX, FMY, patterns.len, flag
+  Wave* = seq[seq[seq[bool]]] # FMX, FMY, patterns.len, flag
   Changes* = seq[seq[bool]]
   Sample = seq[seq[seq[int]]]
-  Pattern* = seq[seq[int]]    # N * N sequence of color indexes
+  Pattern* = seq[seq[int]] # N * N sequence of color indexes
   Patterns = seq[seq[int]]
   Weights = Table[int, int]
   Ordering = seq[int]
-  Point = tuple[x, y:int]
+  Point = tuple[x, y: int]
   Colors = seq[colors.Color]
   Stationary* = seq[int]
   GraphicOutput = seq[seq[colors.Color]]
@@ -185,7 +185,8 @@ proc patternFromIndex*(ind, power, N, color_count: int): seq[int] =
   return result
 
 
-proc savePNG32*(fname, data: string, width, height, zoom: int): bool {.discardable.} =
+proc savePNG32*(fname, data: string, width, height,
+    zoom: int): bool {.discardable.} =
   ##
   var o = ""
   doAssert width * height * 4 == data.len
@@ -265,8 +266,9 @@ proc build_overlapping_propagator*(patterns: Patterns, N: int): Propagator =
     doAssert propagator[0][0].len == T
   return propagator
 
-proc generate_weights_and_ordering*(sample: Sample, N, symmetry, color_count: int, periodicInput: bool): (Weights, Ordering) =
-  ## 
+proc generate_weights_and_ordering*(sample: Sample, N, symmetry,
+    color_count: int, periodicInput: bool): (Weights, Ordering) =
+  ##
   assert symmetry <= 8, "Unexpected symmetry value > 8: " & $symmetry
   let
     SMX = sample.len
@@ -324,7 +326,8 @@ proc load_image*(fname: string): (Colors, Sample) =
   #if png.width mod png.width != 0:
   #  echo "err"
   when defined(testing):
-    echo "image $# loaded - dimensions: $# $#" % [png_fn, $bitmap.width, $bitmap.height]
+    echo "image $# loaded - dimensions: $# $#" % [png_fn, $bitmap.width,
+        $bitmap.height]
   assert bitmap.width * bitmap.height * 4 == bitmap.data.len
   let SMX = bitmap.width
   let SMY = bitmap.height
@@ -357,7 +360,8 @@ proc init_depth*(wave: var Wave, depth: int) =
       wave[x][y] = newSeqWith(depth, true)
 
 
-proc build_overlapping_model*(wave: var Wave, colors: Colors, weights: Weights, ordering: Ordering, N, width, height: int, periodicOutput: bool, symmetry, ground: int):
+proc build_overlapping_model*(wave: var Wave, colors: Colors, weights: Weights,
+    ordering: Ordering, N, width, height: int, periodicOutput: bool, symmetry, ground: int):
     (Patterns, Stationary) =
   ## Create and return: patterns, stationary
   ## Initialize wave matrix
@@ -402,7 +406,8 @@ proc weighted_random*(distribution: seq[int], randval: float): int =
       return i
   return 0
 
-proc observe*(wave: var Wave, changes: var Changes, stationary: Stationary): string =
+proc observe*(wave: var Wave, changes: var Changes,
+    stationary: Stationary): string =
   ## Observe WFC
   var
     observed_min = 1000.0
@@ -414,7 +419,7 @@ proc observe*(wave: var Wave, changes: var Changes, stationary: Stationary): str
     argminx = -1
     argminy = -1
     amount = 0
-    w:seq[bool] = @[]
+    w: seq[bool] = @[]
 
   let T = stationary.len
   let log_t = math.ln T.float
@@ -423,7 +428,8 @@ proc observe*(wave: var Wave, changes: var Changes, stationary: Stationary): str
   for t, s in stationary:
     log_prob[t] = math.ln s.float
 
-  assert wave[0][0].len == stationary.len, $wave[0][0].len & " <--> " & $stationary.len
+  assert wave[0][0].len == stationary.len, $wave[0][0].len & " <--> " &
+      $stationary.len
 
   let FMX = wave.len
   let FMY = wave[0].len
@@ -456,7 +462,7 @@ proc observe*(wave: var Wave, changes: var Changes, stationary: Stationary): str
         entropy = log_t
       else:
         main_sum = 0
-        log_sum = math. ln observed_sum
+        log_sum = math.ln observed_sum
         for t in 0..<T:
           if w[t]:
             main_sum += stationary[t].float * log_prob[t]
@@ -496,8 +502,8 @@ proc observe*(wave: var Wave, changes: var Changes, stationary: Stationary): str
   return "none"
 
 
-proc propagate*(wave: var Wave, changes: var Changes, propagator: Propagator, N: int,
-    periodicOutput: bool): bool =
+proc propagate*(wave: var Wave, changes: var Changes, propagator: Propagator,
+    N: int, periodicOutput: bool): bool =
   let FMX = wave.len
   let FMY = wave[0].len
   let T = wave[0][0].len
@@ -562,7 +568,8 @@ proc newWave*(width, height: int): Wave =
 proc newChanges*(width, height: int): Changes =
   newSeqWith(width, newSeqWith(height, false))
 
-proc prepare_overlapping*(wave: var Wave, changes: var Changes, propagator: Propagator, N, ground: int, periodicOutput: bool) =
+proc prepare_overlapping*(wave: var Wave, changes: var Changes,
+    propagator: Propagator, N, ground: int, periodicOutput: bool) =
   ##
   let T = wave[0][0].len
   var ground = ((ground + T) mod T)
@@ -579,7 +586,7 @@ proc prepare_overlapping*(wave: var Wave, changes: var Changes, propagator: Prop
       if t != ground:
         wave[x][FMY - 1][t] = false
       changes[x][FMY - 1] = true
-      for y in 0..<FMY-1:  # yep, "<FMY-1"
+      for y in 0..<FMY-1: # yep, "<FMY-1"
         wave[x][y][ground] = false
         changes[x][y] = true
 
@@ -588,7 +595,8 @@ proc prepare_overlapping*(wave: var Wave, changes: var Changes, propagator: Prop
     pcount.inc
 
 
-proc generate_image*(fname: string, width, height, N: int, periodicInput=false): (Wave, Colors, Patterns) =
+proc generate_image*(fname: string, width, height, N: int,
+    periodicInput = false): (Wave, Colors, Patterns) =
   var wave = newWave(width, height)
 
   const
@@ -599,7 +607,8 @@ proc generate_image*(fname: string, width, height, N: int, periodicInput=false):
 
   let (colors, sample) = load_image(fname)
   echo("generate_weights_and_ordering ", N, " ", symmetry, " ", colors.len, " ", periodicInput)
-  let (weights, ordering) = generate_weights_and_ordering(sample, N, symmetry, colors.len, periodicInput)
+  let (weights, ordering) = generate_weights_and_ordering(sample, N, symmetry,
+      colors.len, periodicInput)
   let (patterns, stationary) = build_overlapping_model(
       wave, colors, weights, ordering, N, width, height,
       periodicOutput, symmetry, ground)
@@ -639,7 +648,8 @@ proc generate_image*(fname: string, width, height, N: int, periodicInput=false):
 
 
 
-proc graphics(wave: Wave, colors: Colors, patterns: Patterns, width, height, N: int): string =
+proc graphics(wave: Wave, colors: Colors, patterns: Patterns, width, height,
+    N: int): string =
   result = ""
   let FMX = wave.len
   let FMY = wave[0].len
@@ -686,7 +696,8 @@ proc graphics(wave: Wave, colors: Colors, patterns: Patterns, width, height, N: 
 
   doAssert result.len == FMX * FMY * 4
 
-proc graphics_comp*(wave: Wave, colors: Colors, patterns: Patterns, width, height, N: int): string =
+proc graphics_comp*(wave: Wave, colors: Colors, patterns: Patterns, width,
+    height, N: int): string =
   ##
   result = ""
   let FMX = wave.len
@@ -700,15 +711,15 @@ proc graphics_comp*(wave: Wave, colors: Colors, patterns: Patterns, width, heigh
       for p in w:
         if p: pcnt.inc
       if pcnt == 0:
-          let bytes = chr(255) & chr(100) & chr(100) & chr(100)
-          result.add bytes
+        let bytes = chr(255) & chr(100) & chr(100) & chr(100)
+        result.add bytes
       elif pcnt == 1:
         for t, patval in w:
           if patval:
             let c = colors[patterns[t][0]].extractRGB()
             let bytes = chr(c.r) & chr(c.g) & chr(c.b) & chr(255)
             result.add bytes
-            break  # pick only the first pattern
+            break # pick only the first pattern
       else:
         var r, g, b = 0
         for t, patval in w:
@@ -721,7 +732,8 @@ proc graphics_comp*(wave: Wave, colors: Colors, patterns: Patterns, width, heigh
         result.add bytes
   doAssert result.len == FMX * FMY * 4
 
-proc render_image*(wave: Wave, colors: Colors, patterns: Patterns, zoom=1): seq[gifwriter.Color] =
+proc render_image*(wave: Wave, colors: Colors, patterns: Patterns,
+    zoom = 1): seq[gifwriter.Color] =
   ## Render image into a sequence of Color of length FMX * FMY * zoom * zoom
   let FMX = wave.len
   let FMY = wave[0].len
@@ -741,19 +753,20 @@ proc render_image*(wave: Wave, colors: Colors, patterns: Patterns, zoom=1): seq[
           r += int(c.r / pcnt)
           g += int(c.g / pcnt)
           b += int(c.b / pcnt)
-      let o = gifwriter.Color(r:r.uint8, g:g.uint8, b:b.uint8)
+      let o = gifwriter.Color(r: r.uint8, g: g.uint8, b: b.uint8)
       for zx in 0..<zoom:
         for zy in 0..<zoom:
           result[img_index + zx + zy * FMX * zoom] = o
 
 
-proc writeout_image(fname: string, wave: Wave, colors: Colors, patterns: Patterns, width, height, N: int, zoom = 1) =
+proc writeout_image(fname: string, wave: Wave, colors: Colors,
+    patterns: Patterns, width, height, N: int, zoom = 1) =
   var data = ""
   let FMX = wave.len
   let FMY = wave[0].len
   echo "PAT LEN ", patterns.len
   for y in 0..FMY-1:
-    let dy = if y < FMY - N + 1:  0 else: N - 1
+    let dy = if y < FMY - N + 1: 0 else: N - 1
     for x in 0..FMX-1:
       let dx = if x < FMX - N + 1: 0 else: N - 1
 
@@ -795,8 +808,8 @@ proc writeout_image(fname: string, wave: Wave, colors: Colors, patterns: Pattern
     var data2 = newSTring(data.len * zoom * zoom)
     for y in 0..FMY-1:
       for x in 0..FMX-1:
-        let src_index = x * 4  + y * FMY * 4
-        let src = data[src_index.. src_index+3]
+        let src_index = x * 4 + y * FMY * 4
+        let src = data[src_index .. src_index+3]
         assert src.len == 4
         for dy in 0..zoom-1:
           for dx in 0..zoom-1:
@@ -808,7 +821,7 @@ proc writeout_image(fname: string, wave: Wave, colors: Colors, patterns: Pattern
     doAssert fname.savePNG32(data2, FMX * zoom, FMY * zoom) == true
     echo FMX * zoom, " x ", FMY * zoom, " $# written" % fname
 
-proc write_png*(fname, data: string, wave: Wave, overwrite=false) =
+proc write_png*(fname, data: string, wave: Wave, overwrite = false) =
   ## Write static PNG image to disk
   let FMX = wave.len
   let FMY = wave[0].len
@@ -822,23 +835,26 @@ proc write_png*(fname, data: string, wave: Wave, overwrite=false) =
 
 
 
-proc generate_2d_animated_gif*(input_fn, output_basefn: string, width, height, N: int,
-    periodicInput=false,
-    ground=0, symmetry=8, fps=10.0, zoom=4, maxcycles=8000, frame_to_cycle_interval=10) =
+proc generate_2d_animated_gif*(input_fn, output_basefn: string, width, height,
+    N: int, periodicInput = false,
+    ground = 0, symmetry = 8, fps = 10.0, zoom = 4, maxcycles = 8000,
+        frame_to_cycle_interval = 10) =
   ## Generate and write out animated GIF
   const
     periodicOutput = true
 
   var wave = newWave(width, height)
   let (colors, sample) = load_image(input_fn)
-  let (weights, ordering) = generate_weights_and_ordering(sample, N, symmetry, colors.len, periodicInput)
-  let (patterns, stationary) = build_overlapping_model(wave, colors, weights, ordering,
+  let (weights, ordering) = generate_weights_and_ordering(sample, N, symmetry,
+      colors.len, periodicInput)
+  let (patterns, stationary) = build_overlapping_model(wave, colors, weights,
+    ordering,
     N, width, height, periodicOutput, symmetry, ground)
   let propagator = build_overlapping_propagator(patterns, N)
   var changes = newChanges(width, height)
 
   # output gif
-  var gif = newGif("$#.gif" % output_basefn, width * 4, height * 4, fps=fps)
+  var gif = newGif("$#.gif" % output_basefn, width * 4, height * 4, fps = fps)
 
   for cycle in 0..maxcycles:
     if observe(wave, changes, stationary) != "none":
@@ -846,5 +862,5 @@ proc generate_2d_animated_gif*(input_fn, output_basefn: string, width, height, N
     while propagate(wave, changes, propagator, N, periodicOutput):
       discard
     if (cycle mod frame_to_cycle_interval) == 0:
-      let gif_frame = render_image(wave, colors, patterns, zoom=4)
+      let gif_frame = render_image(wave, colors, patterns, zoom = 4)
       gif.write(gif_frame, 0.0, false)
