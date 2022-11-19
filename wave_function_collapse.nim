@@ -65,10 +65,10 @@ when defined(lcg):
 
 else:
   # use random module
-  import random
+  import std/random
 
   proc randomfloat(): float =
-    random(1.0)
+    rand(1.0)
 
 
 
